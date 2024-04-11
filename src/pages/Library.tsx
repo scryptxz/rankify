@@ -33,20 +33,25 @@ export default function Library() {
 
   const [artists, setArtists] = useState<any[]>([]);
   const [tracks, setTracks] = useState<any[]>([]);
+  const [type, setType] = useState("artists");
 
   useEffect(() => {
     const names: string[] = [];
-    spotifyData.forEach((element) => {
-      names.push(element.master_metadata_album_artist_name);
+    spotifyData.forEach((e) => {
+      names.push(e.master_metadata_album_artist_name);
     });
     setArtists(names);
 
+    interface TrackNames {
+      name: string;
+      artist: string;
+    }
     const tracksNames: string[] = [];
-    spotifyData.forEach((element) => {
-      tracksNames.push(element.master_metadata_track_name);
+    spotifyData.forEach((e) => {
+      tracksNames.push(e.master_metadata_track_name);
     });
     setTracks(tracksNames);
-  }, []);
+  }, [type]);
 
   dayjs.extend(isoWeek);
 
@@ -54,34 +59,61 @@ export default function Library() {
 
   const tracksRanking = count(tracks, "trackName", "playCount");
 
+  console.log(tracksRanking);
+
   return (
-    <div className="flex-col items-center min-h-screen p-10 bg-neutral-950">
-      <div className="text-white">
-        <button>Top Artists</button>
-        <button>Top Tracks</button>
+    <div className="flex flex-col items-center min-h-screen gap-6 p-10 bg-neutral-950">
+      <div className="text-xl text-white">
+        <button
+          onClick={() => setType("artists")}
+          className={`px-5 py-3 border border-gray-400 ${
+            type === "artists" && "bg-gray-200 text-black"
+          }`}>
+          Top Artists
+        </button>
+        <button
+          onClick={() => setType("tracks")}
+          className={`px-5 py-3 border border-gray-400 ${
+            type === "tracks" && "bg-gray-200 text-black"
+          }`}>
+          Top Tracks
+        </button>
       </div>
-      {/* <div className="flex flex-col gap-6">
-        {ranking.slice(0, 10).map((e, i) => (
-          <div className="flex items-center gap-12 p-4 text-2xl text-white border border-purple-500">
-            <span className="font-bold text-purple-500">{i + 1}º - </span>
-            <span className="">{e.artistName}</span>
-            <span className="p-2 font-semibold text-black bg-purple-400 rounded-xl">
-              {e.playCount} times
-            </span>
+      {type === "artists" ? (
+        <div className="flex flex-col w-[60rem] gap-6">
+          {ranking.slice(0).map((e, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between gap-12 px-4 text-2xl text-white border border-purple-500 py-7">
+              <div className="flex items-center gap-6">
+                <span className="font-bold text-purple-500">{i + 1}º - </span>
+                <span className="">{e.artistName}</span>
+              </div>
+              <span className="p-2 font-semibold text-purple-500">
+                {e.playCount} times
+              </span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        type === "tracks" && (
+          <div className="flex flex-col gap-6 w-[60rem]">
+            {tracksRanking.slice(0).map((e, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between px-4 text-2xl text-white border border-orange-500 py-7">
+                <div className="flex items-center gap-6">
+                  <span className="font-bold text-orange-500">{i + 1}º - </span>
+                  <span className="w-[40rem]">{e.trackName}</span>
+                </div>
+                <span className="p-2 font-semibold text-orange-500">
+                  {e.playCount} times
+                </span>
+              </div>
+            ))}
           </div>
-        ))}
-      </div> */}
-      <div className="flex flex-col gap-6">
-        {tracksRanking.slice(0, 50).map((e, i) => (
-          <div className="flex items-center gap-12 p-4 text-2xl text-white border border-red-500">
-            <span className="font-bold text-red-500">{i + 1}º - </span>
-            <span className="">{e.trackName}</span>
-            <span className="p-2 font-semibold text-black bg-red-400 rounded-xl">
-              {e.playCount} times
-            </span>
-          </div>
-        ))}
-      </div>
+        )
+      )}
     </div>
   );
 }
