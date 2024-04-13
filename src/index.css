@@ -14,3 +14,8 @@
   background-color: #5a0052;
   border-radius: 5px;
 }
+
+input,
+button {
+  outline: none;
+}
