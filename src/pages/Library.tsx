@@ -2,38 +2,13 @@
 import SpotifyData from "../utils/spotify_data.json";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import count from "count-array-values";
 import isoWeek from "dayjs/plugin/isoWeek";
+import { PiCaretDownBold } from "react-icons/pi";
 
 export default function Library() {
-  interface SpotifyPlaybackEvent {
-    ts: null | string;
-    username: null | string;
-    platform: null | string;
-    ms_played: null | number;
-    conn_country: null | string;
-    ip_addr_decrypted: null | string;
-    user_agent_decrypted: null | string;
-    master_metadata_track_name: string;
-    master_metadata_album_artist_name: string;
-    master_metadata_album_album_name: null | string;
-    spotify_track_uri: null | string;
-    episode_name: null | string;
-    episode_show_name: null | string;
-    spotify_episode_uri: null | string;
-    reason_start: null | string;
-    reason_end: null | string;
-    shuffle: null | boolean;
-    skipped: null | boolean;
-    offline: null | boolean;
-    offline_timestamp: null | number;
-    incognito_mode: null | boolean;
-  }
-  const spotifyData: SpotifyPlaybackEvent[] = SpotifyData;
-
-  const [artists, setArtists] = useState<any[]>([]);
   const [tracks, setTracks] = useState<any[]>([]);
   const [type, setType] = useState("artists");
+  const [tracksNumbers, setTracksNumbers] = useState<number>(50);
 
   useEffect(() => {
     const names: string[] = [];
@@ -41,28 +16,15 @@ export default function Library() {
       names.push(e.master_metadata_album_artist_name);
     });
     setArtists(names);
-
-    const tracksNames: string[] = [];
-    spotifyData.forEach((e) => {
-      tracksNames.push(e.master_metadata_track_name);
-    });
-    setTracks(tracksNames);
   }, [type]);
 
   dayjs.extend(isoWeek);
-
-  const ranking = count(artists, "artistName", "playCount");
 
   const tracksRanking = count(tracks, "trackName", "playCount");
 
   const progressBar = (firstValue: number, currentValue: number) => {
     const x: number = (currentValue * 880) / firstValue;
     return x;
-  };
-
-  const percentage = (firstValue: number, currentValue: number) => {
-    const result: number = (progressBar(firstValue, currentValue) / 880) * 100;
-    return result.toFixed(2);
   };
 
   return (
@@ -90,14 +52,14 @@ export default function Library() {
           placeholder="Search track/artists"
         />
         {type === "artists" ? (
-          <div className="flex flex-col gap-6">
-            {ranking.slice(0).map((e, i) => (
+          <div className="flex flex-col w-full gap-6">
+            {ranking.slice(0, artistsNumbers).map((e, i) => (
               <>
                 <div
                   key={i}
-                  className="relative flex items-center justify-between gap-12 px-4 py-4 text-2xl text-white border border-purple-500">
+                  className="relative flex items-center justify-between gap-12 px-4 py-3 text-xl text-white border border-purple-500">
                   <div
-                    className={`absolute left-0 top-0 h-[82px] bg-[rgba(248,43,255,0.08)]`}
+                    className={`absolute left-0 top-0 h-[70px] bg-[rgba(248,43,255,0.08)]`}
                     style={{
                       width: progressBar(ranking[0].playCount, e.playCount),
                     }}></div>
@@ -109,11 +71,17 @@ export default function Library() {
                   </div>
                   <span className="z-10 p-2 font-semibold text-purple-500">
                     {e.playCount} times
-                    {/* {percentage(ranking[0].playCount, e.playCount)}% */}
                   </span>
                 </div>
               </>
             ))}
+            <button
+              onClick={() => {
+                setArtistsNumbers(artistsNumbers + 50);
+              }}
+              className="flex items-center self-center gap-2 text-xl text-neutral-300 hover:underline">
+              Show more <PiCaretDownBold />
+            </button>
           </div>
         ) : (
           type === "tracks" && (
