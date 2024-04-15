@@ -6,7 +6,7 @@ import SpotifyData3 from "../../data/sd4.json";
 import SpotifyData4 from "../../data/sd3.json";
 import { PiCaretDownBold } from "react-icons/pi";
 
-export default function ArtistsList() {
+export default function AlbumsList() {
   interface SpotifyPlaybackEvent {
     ts: null | string;
     username: null | string;
@@ -44,7 +44,7 @@ export default function ArtistsList() {
   useEffect(() => {
     const artistsNames: string[] = [];
     spotifyData.forEach((e) => {
-      artistsNames.push(e.master_metadata_album_artist_name || "Unknown Artist");
+      artistsNames.push(e.master_metadata_album_album_name || "Unknown Album");
     });
     setArtists(artistsNames);
   }, []);
@@ -58,12 +58,12 @@ export default function ArtistsList() {
           key={i}
           className="relative flex items-center justify-between gap-12 px-4 py-3 text-xl text-white rounded-full">
           <div
-            className={`absolute left-0 top-0 h-[70px] bg-[rgba(88,43,255,0.4)] rounded-full shadow-2xl`}
+            className={`absolute left-0 top-0 h-[70px] bg-[rgba(65,148,100,0.4)] rounded-full shadow-2xl`}
             style={{
               width: progressBar(ranking[0].playCount, e.playCount),
             }}></div>
           <div className="z-10 flex items-center gap-6">
-            <span className="font-bold text-blue-400">{i + 1}º - </span>
+            <span className="font-bold text-green-400">{i + 1}º - </span>
             <span>{e.artistName}</span>
           </div>
           <span className="z-10 p-2 font-semibold text-white">

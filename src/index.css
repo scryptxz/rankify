@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -11,7 +13,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #5a0052;
+  background-color: #9a9a9a;
   border-radius: 5px;
 }
 

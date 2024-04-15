@@ -6,7 +6,7 @@ import SpotifyData3 from "../../data/sd4.json";
 import SpotifyData4 from "../../data/sd3.json";
 import { PiCaretDownBold } from "react-icons/pi";
 
-export default function ArtistsList() {
+export default function TracksList() {
   interface SpotifyPlaybackEvent {
     ts: null | string;
     username: null | string;
@@ -33,47 +33,47 @@ export default function ArtistsList() {
 
   const spotifyData: SpotifyPlaybackEvent[] = [...SpotifyData1, ...SpotifyData2, ...SpotifyData3, ...SpotifyData4];
 
-  const [artists, setArtists] = useState<any[]>([]);
-  const [artistsNumbers, setArtistsNumbers] = useState<number>(50);
+  const [tracks, setTracks] = useState<any[]>([]);
+  const [tracksNumbers, setTracksNumbers] = useState<number>(50);
+
+  useEffect(() => {
+    const tracksNames: string[] = [];
+    spotifyData.forEach((e) => {
+      tracksNames.push(e.master_metadata_track_name || "Unknown Track");
+    });
+    setTracks(tracksNames);
+  }, []);
 
   const progressBar = (firstValue: number, currentValue: number) => {
     const x: number = (currentValue * 880) / firstValue;
     return x;
   };
 
-  useEffect(() => {
-    const artistsNames: string[] = [];
-    spotifyData.forEach((e) => {
-      artistsNames.push(e.master_metadata_album_artist_name || "Unknown Artist");
-    });
-    setArtists(artistsNames);
-  }, []);
-
-  const ranking = count(artists, "artistName", "playCount");
+  const ranking = count(tracks, "trackName", "playCount");
 
   return (
     <div className="flex flex-col w-full gap-6">
-      {ranking.slice(0, artistsNumbers).map((e, i) => (
+      {ranking.slice(0, tracksNumbers).map((e, i) => (
         <div
           key={i}
-          className="relative flex items-center justify-between gap-12 px-4 py-3 text-xl text-white rounded-full">
+          className="relative flex items-center justify-between gap-12 px-4 py-3 text-xl text-white border-[#E54173]">
           <div
-            className={`absolute left-0 top-0 h-[70px] bg-[rgba(88,43,255,0.4)] rounded-full shadow-2xl`}
+            className={`absolute left-0 top-0 h-[70px] bg-[rgba(229,65,114,0.6)] rounded-full shadow-2xl`}
             style={{
               width: progressBar(ranking[0].playCount, e.playCount),
             }}></div>
           <div className="z-10 flex items-center gap-6">
-            <span className="font-bold text-blue-400">{i + 1}º - </span>
-            <span>{e.artistName}</span>
+            <span className="font-bold text-[#ff9ebc]">{i + 1}º - </span>
+            <span>{e.trackName}</span>
           </div>
-          <span className="z-10 p-2 font-semibold text-white">
+          <span className="z-10 p-2 font-bold text-white">
             {e.playCount} times
           </span>
         </div>
       ))}
       <button
         onClick={() => {
-          setArtistsNumbers(artistsNumbers + 50);
+          setTracksNumbers(tracksNumbers + 50);
         }}
         className="flex items-center self-center gap-2 text-xl text-neutral-300 hover:underline">
         Show more <PiCaretDownBold />
