@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import count from "count-array-values";
+import { count } from "../../utils/count";
 import { PiCaretDownBold } from "react-icons/pi";
 
 interface SpotifyPlaybackEvent {
