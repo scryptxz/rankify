@@ -29,6 +29,7 @@ export default function FileUpload(props: FileUploadInterface) {
           setShowContent(true);
         } catch (error) {
           alert("Invalid file!");
+          setLoading(false);
         }
       };
       reader.readAsText(file);

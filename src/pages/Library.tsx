@@ -15,7 +15,7 @@ export default function Library() {
   const [showContent, setShowContent] = useState<boolean>(false);
 
   return (
-    <main className="min-h-screen py-8 bg-gradient-to-tl from-slate-700 to-blue-950 font-['Dosis'] font-semibold">
+    <main className="min-h-screen py-8 bg-gradient-to-tl from-darker to-light font-['Dosis'] font-semibold">
       <section className="flex flex-col items-center m-auto gap-12 w-[60rem]">
         <img src={Logo} alt="BlastFM logo" width={200} />
         <FileUpload

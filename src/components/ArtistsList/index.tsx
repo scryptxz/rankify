@@ -59,7 +59,7 @@ export default function ArtistsList(props: FileData) {
           key={i}
           className="relative flex items-center justify-between gap-12 px-4 py-3 text-xl text-white rounded-full">
           <span
-            className={`absolute left-0 top-0 h-[70px] bg-[rgba(88,43,255,0.4)] rounded-full shadow-2xl`}
+            className={`absolute left-0 top-0 h-[70px] bg-cyan rounded-full shadow-2xl`}
             style={{
               width: progressBar(ranking[0].playCount, e.playCount) + 70,
             }}></span>

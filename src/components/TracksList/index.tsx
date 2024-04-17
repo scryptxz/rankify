@@ -55,14 +55,14 @@ export default function TracksList(props: FileData) {
       {ranking.slice(0, tracksNumbers).map((e, i) => (
         <div
           key={i}
-          className="relative flex items-center justify-between gap-12 px-4 py-3 text-xl text-white border-[#E54173]">
+          className="relative flex items-center justify-between gap-12 px-4 py-3 text-xl text-white">
           <div
-            className={`absolute left-0 top-0 h-[70px] bg-[rgba(229,65,114,0.6)] rounded-full shadow-2xl`}
+            className={`absolute left-0 top-0 h-[70px] bg-pink rounded-full shadow-2xl`}
             style={{
               width: progressBar(ranking[0].playCount, e.playCount),
             }}></div>
           <div className="z-10 flex items-center gap-6">
-            <span className="font-bold text-[#ff9ebc]">{i + 1}º - </span>
+            <span className="font-bold">{i + 1}º - </span>
             <span>{e.trackName}</span>
           </div>
           <span className="z-10 p-2 font-bold text-white">
