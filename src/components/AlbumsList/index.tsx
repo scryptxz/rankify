@@ -74,7 +74,7 @@ export default function AlbumsList(props: FileData) {
         onClick={() => {
           setAlbumsNumbers(albumsNumbers * 2);
         }}
-        className="flex items-center self-center gap-2 text-xl text-neutral-300 hover:underline">
+        className="flex items-center self-center gap-2 text-xl text-white hover:underline">
         Show more <PiCaretDownBold />
       </button>
     </div>

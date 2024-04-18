@@ -59,7 +59,7 @@ export default function TracksList(props: FileData) {
           <div
             className={`absolute left-0 top-0 h-[70px] bg-pink rounded-full shadow-2xl`}
             style={{
-              width: progressBar(ranking[0].playCount, e.playCount),
+              width: progressBar(ranking[0].playCount, e.playCount) + 70,
             }}></div>
           <div className="z-10 flex items-center gap-6">
             <span className="font-bold">{i + 1}º - </span>
@@ -74,7 +74,7 @@ export default function TracksList(props: FileData) {
         onClick={() => {
           setTracksNumbers(tracksNumbers * 2);
         }}
-        className="flex items-center self-center gap-2 text-xl text-neutral-300 hover:underline">
+        className="flex items-center self-center gap-2 text-xl text-white hover:underline">
         Show more <PiCaretDownBold />
       </button>
     </div>
