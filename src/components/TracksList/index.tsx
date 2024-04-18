@@ -55,7 +55,7 @@ export default function TracksList(props: FileData) {
       {ranking.slice(0, tracksNumbers).map((e, i) => (
         <div
           key={i}
-          className="relative flex items-center justify-between gap-12 px-4 py-3 text-xl text-white">
+          className="relative flex items-center justify-between gap-12 px-4 py-3 text-lg text-white">
           <div
             className={`absolute left-0 top-0 h-[70px] bg-pink rounded-full shadow-2xl`}
             style={{
@@ -74,7 +74,7 @@ export default function TracksList(props: FileData) {
         onClick={() => {
           setTracksNumbers(tracksNumbers * 2);
         }}
-        className="flex items-center self-center gap-2 text-xl text-white hover:underline">
+        className="flex items-center self-center gap-2 text-lg text-white hover:underline">
         Show more <PiCaretDownBold />
       </button>
     </div>

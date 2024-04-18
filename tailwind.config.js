@@ -14,6 +14,15 @@ export default {
       purple: "#2C1E92",
       cyan: "#34778d",
     },
+    animation: {
+      progress: "progress 2s ease forwards",
+    },
+    keyframes: {
+      progress: {
+        from: { width: "0%" },
+        to: { width: "66%" },
+      },
+    },
   },
   plugins: [],
 };

@@ -16,7 +16,7 @@ export default function Library() {
 
   return (
     <main className="min-h-screen py-8 bg-gradient-to-tl from-darker to-light font-['Dosis'] font-semibold">
-      <section className="flex flex-col items-center m-auto gap-12 w-[60rem]">
+      <section className="flex flex-col items-center m-auto gap-8 max-w-[60rem]">
         <img src={Logo} alt="BlastFM logo" width={200} />
         <FileUpload
           setInputFile={setInputFile}
@@ -26,14 +26,14 @@ export default function Library() {
         {loading && <RaceBy size={150} color="#ffffff" lineWeight={6} />}
         {/* <input
           type="text"
-          className="w-full p-4 text-xl text-white bg-transparent border border-fuchsia-700 placeholder:text-fuchsia-700"
+          className="w-full p-4 text-lg text-white bg-transparent border border-fuchsia-700 placeholder:text-fuchsia-700"
           placeholder="Search track/artists"
         /> */}
         {showContent && (
           <>
             <Buttons type={type} setType={setType} />
             {type === "artists" ? (
-              <ArtistsList inputFile={inputFile} />
+              <ArtistsList jsonData={inputFile} />
             ) : type === "tracks" ? (
               <TracksList inputFile={inputFile} />
             ) : (
