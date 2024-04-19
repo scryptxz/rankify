@@ -6,7 +6,7 @@ interface ButtonsProps {
 export default function CategoryButtons(props: ButtonsProps) {
   const { category, setCategory } = props;
   return (
-    <div className="text-lg text-lightgreen flex flex-wrap justify-center">
+    <nav className="text-lg text-lightgreen flex flex-wrap justify-center">
       <button
         onClick={() => setCategory("master_metadata_album_artist_name")}
         className={`px-5 py-2 border border-lightgreen rounded-l-full duration-200 ease-in-out ${
@@ -31,6 +31,6 @@ export default function CategoryButtons(props: ButtonsProps) {
         }`}>
         Top Tracks
       </button>
-    </div>
+    </nav>
   );
 }

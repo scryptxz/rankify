@@ -15,7 +15,7 @@ export default function Library() {
   return (
     <main className="min-h-screen py-8 bg-primary font-['Dosis'] font-semibold">
       <section className="flex flex-col items-center m-auto gap-8 max-w-[60rem]">
-        <img src={Logo} alt="BlastFM logo" width={200} />
+        <img src={Logo} alt="Rankify logo" width={200} />
         <FileUpload
           setInputFile={setInputFile}
           setLoading={setLoading}
