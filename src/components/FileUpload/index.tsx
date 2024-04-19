@@ -40,13 +40,13 @@ export default function FileUpload(props: FileUploadInterface) {
   return (
     <label
       htmlFor="file_upload"
-      className={`relative text-center py-5 px-10 border border-white cursor-pointer rounded-2xl hover:bg-white hover:bg-opacity-5 ${
-        drop && "bg-white bg-opacity-5"
+      className={`relative text-center py-5 px-10 border border-lightgreen cursor-pointer rounded-2xl hover:bg-lightgreen hover:bg-opacity-10 ${
+        drop && "bg-lightgreen bg-opacity-5"
       }`}
       onDragEnter={() => setDrop(true)}
       onDragLeave={() => setDrop(false)}
       onDrop={() => setDrop(false)}>
-      <strong className="text-xl font-bold text-white">
+      <strong className="text-xl font-bold text-lightgreen">
         {drop ? "Drop here" : "Upload/Drop file (JSON)"}
       </strong>
       <input
