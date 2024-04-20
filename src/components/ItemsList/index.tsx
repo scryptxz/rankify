@@ -123,7 +123,7 @@ export default function ItemsList(props: FileData) {
             </div>
             <div className="z-10 flex items-center gap-6">
               <span className="font-bold text-light">{i + 1}º - </span>
-              <canvas className="">
+              <span className="">
                 {(() => {
                   const japaneseRegex =
                     /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/;
@@ -141,7 +141,7 @@ export default function ItemsList(props: FileData) {
                     return e.itemName;
                   }
                 })()}
-              </canvas>
+              </span>
             </div>
           </div>
           <span className="text-lightgreen">
