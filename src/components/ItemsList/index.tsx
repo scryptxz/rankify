@@ -96,8 +96,13 @@ export default function ItemsList(props: FileData) {
         selectedYear={selectedYear}
         setSelectedYear={setSelectedYear}
         setItemsCount={setItemsCount}
+        setSearchItem={setSearchItem}
       />
-      <SearchItem setSearchItem={setSearchItem} category={category} />
+      <SearchItem
+        searchItem={searchItem}
+        setSearchItem={setSearchItem}
+        category={category}
+      />
 
       <ul className="flex gap-12 justify-center text-lightgreen">
         <li>Play count: {new Intl.NumberFormat().format(playCount)}</li>
@@ -106,32 +111,37 @@ export default function ItemsList(props: FileData) {
       {ranking.slice(0, itemsCount).map((e, i) => (
         <li className="flex items-center gap-4 text-nowrap w-full" key={i}>
           <div className="relative w-full flex items-center justify-between gap-12 px-4 py-1 text-lightgreen rounded-full">
-            <span
-              className={`absolute left-0 top-0 h-[32px] bg-green rounded-full shadow-2xl`}
+            <div
+              className="absolute flex -left-2 transition-[width] duration-1000 ease-in-out"
               style={{
                 width: `${progressBar(ranking[0].playCount, e.playCount)}%`,
-              }}></span>
+              }}>
+              <span
+                className={`left-0 top-0 h-[32px] ${
+                  itemsCount <= 50 ? "animate-progress" : "w-full"
+                } bg-green rounded-full shadow-2xl`}></span>
+            </div>
             <div className="z-10 flex items-center gap-6">
               <span className="font-bold text-light">{i + 1}º - </span>
-              <span className="">
+              <canvas className="">
                 {(() => {
                   const japaneseRegex =
                     /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/;
-                  if (window.innerWidth < 550 && e.itemName.length > 22) {
+                  if (window.innerWidth < 550 && e.itemName.length > 35) {
                     if (window.innerWidth < 450 && e.itemName.length > 28) {
                       return e.itemName.slice(0, 28) + "...";
                     } else {
                       if (japaneseRegex.test(e.itemName)) {
-                        return e.itemName.slice(0, 10) + "...";
+                        return e.itemName.slice(0, 1) + "...";
                       } else {
-                        return e.itemName.slice(0, 40) + "...";
+                        return e.itemName.slice(0, 35) + "...";
                       }
                     }
                   } else {
                     return e.itemName;
                   }
                 })()}
-              </span>
+              </canvas>
             </div>
           </div>
           <span className="text-lightgreen">

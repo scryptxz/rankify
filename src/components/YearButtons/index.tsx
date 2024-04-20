@@ -19,10 +19,17 @@ interface YearProps {
   selectedYear: string;
   setSelectedYear: (value: string) => void;
   setItemsCount: (value: number) => void;
+  setSearchItem: (value: string) => void;
 }
 
 export default function YearButtons(props: YearProps) {
-  const { jsonData, selectedYear, setSelectedYear, setItemsCount } = props;
+  const {
+    jsonData,
+    selectedYear,
+    setSelectedYear,
+    setItemsCount,
+    setSearchItem,
+  } = props;
   const [years, setYears] = useState<string[]>([]);
 
   useEffect(() => {
@@ -46,6 +53,7 @@ export default function YearButtons(props: YearProps) {
           onClick={() => {
             setSelectedYear(e);
             setItemsCount(50);
+            setSearchItem("");
           }}
           className={`self-center px-8 py-2 text-lg border text-lightgreen duration-200 ease-in-out ${
             selectedYear === e
@@ -59,6 +67,7 @@ export default function YearButtons(props: YearProps) {
         onClick={() => {
           setSelectedYear("0");
           setItemsCount(50);
+          setSearchItem("");
         }}
         className={`self-center px-8 py-2 text-lg border text-lightgreen lg:rounded-r-full duration-200 ease-in-out ${
           selectedYear === "0"

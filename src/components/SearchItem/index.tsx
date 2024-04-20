@@ -1,13 +1,15 @@
 interface SearchItem {
   setSearchItem: (value: string) => void;
   category: string;
+  searchItem: string;
 }
 
 export default function SearchItem(props: SearchItem) {
-  const { setSearchItem, category } = props;
+  const { setSearchItem, category, searchItem } = props;
 
   return (
     <input
+      value={searchItem}
       onChange={(e) => setSearchItem(e.target.value)}
       type="text"
       autoFocus

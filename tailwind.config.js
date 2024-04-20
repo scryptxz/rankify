@@ -12,12 +12,12 @@ export default {
       lightgreen: "#DAFFD6",
     },
     animation: {
-      progress: "progress 2s ease forwards",
+      progress: "progress 1.5s ease forwards",
     },
     keyframes: {
       progress: {
         from: { width: "0%" },
-        to: { width: "66%" },
+        to: { width: "100%" },
       },
     },
   },
