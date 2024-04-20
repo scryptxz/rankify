@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { count } from "../../utils/count";
 import { PiCaretDownBold } from "react-icons/pi";
 import YearButtons from "../YearButtons";
+import SearchItem from "../SearchItem";
 
 interface SpotifyPlaybackEvent {
   ts: string;
@@ -22,6 +23,7 @@ export default function ItemsList(props: FileData) {
   const [items, setItems] = useState<string[]>([]);
   const [itemsCount, setItemsCount] = useState<number>(50);
   const [playCount, setPlayCount] = useState(0);
+  const [searchItem, setSearchItem] = useState("");
 
   const lastYear: string = new Date(jsonData[jsonData.length - 1].ts)
     .getFullYear()
@@ -34,17 +36,54 @@ export default function ItemsList(props: FileData) {
   };
 
   useEffect(() => {
-    const filteredItems = jsonData.filter((a) =>
+    const filteredItemsByYear = jsonData.filter((a) =>
       a.ts.includes(selectedYear.toString())
     );
 
-    const items: string[] = filteredItems.map(
-      (e) => (e as any)[category] || "Unknown"
-    );
+    const filteredItemsBySearch = filteredItemsByYear.filter((a) => {
+      switch (category) {
+        case "master_metadata_track_name":
+          return (
+            a.master_metadata_track_name != null &&
+            a.master_metadata_track_name
+              .toLocaleLowerCase()
+              .includes(searchItem.toLocaleLowerCase().trim())
+          );
+        case "master_metadata_album_album_name":
+          return (
+            a.master_metadata_album_album_name != null &&
+            a.master_metadata_album_album_name
+              .toLocaleLowerCase()
+              .includes(searchItem.toLocaleLowerCase().trim())
+          );
+        default:
+          return (
+            a.master_metadata_album_artist_name != null &&
+            a.master_metadata_album_artist_name
+              .toLocaleLowerCase()
+              .includes(searchItem.toLocaleLowerCase().trim())
+          );
+      }
+    });
+
+    const items: string[] = filteredItemsBySearch.map((e) => {
+      if (
+        category === "master_metadata_track_name" ||
+        category === "master_metadata_album_album_name"
+      ) {
+        return (
+          ((e as SpotifyPlaybackEvent)[category] || "Unknown") +
+          " - " +
+          e["master_metadata_album_artist_name"]
+        );
+      } else {
+        return (e as any)[category] || "Unknown";
+      }
+    });
 
     setItems(items);
     setPlayCount(items.length);
-  }, [jsonData, category, selectedYear]);
+  }, [jsonData, category, selectedYear, searchItem]);
 
   const ranking = count(items, "itemName", "playCount");
 
@@ -56,7 +95,9 @@ export default function ItemsList(props: FileData) {
         category={category}
         selectedYear={selectedYear}
         setSelectedYear={setSelectedYear}
+        setItemsCount={setItemsCount}
       />
+      <SearchItem setSearchItem={setSearchItem} category={category} />
 
       <ul className="flex gap-12 justify-center text-lightgreen">
         <li>Play count: {new Intl.NumberFormat().format(playCount)}</li>

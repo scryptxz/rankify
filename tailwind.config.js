@@ -5,10 +5,9 @@ export default {
     colors: {
       primary: "#0B141B",
       light: "#20C161",
-      dark: "#0B141B",
-      darker: "#010d1c",
+      dark: "#010d1c",
       white: "#f5f9ff",
-      black: "#00050d",
+      black: "#081118",
       green: "#103629",
       lightgreen: "#DAFFD6",
     },

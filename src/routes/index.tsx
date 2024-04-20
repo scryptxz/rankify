@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Library from "../pages/Library";
+import Home from "../pages/Home";
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Library />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );

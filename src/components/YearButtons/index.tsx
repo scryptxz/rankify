@@ -18,10 +18,11 @@ interface YearProps {
   category: string;
   selectedYear: string;
   setSelectedYear: (value: string) => void;
+  setItemsCount: (value: number) => void;
 }
 
 export default function YearButtons(props: YearProps) {
-  const { jsonData, selectedYear, setSelectedYear } = props;
+  const { jsonData, selectedYear, setSelectedYear, setItemsCount } = props;
   const [years, setYears] = useState<string[]>([]);
 
   useEffect(() => {
@@ -44,19 +45,25 @@ export default function YearButtons(props: YearProps) {
           key={i}
           onClick={() => {
             setSelectedYear(e);
+            setItemsCount(50);
           }}
           className={`self-center px-8 py-2 text-lg border text-lightgreen duration-200 ease-in-out ${
-            selectedYear === e && "bg-lightgreen !text-black !border-lightgreen"
-          } ${i === 0 && "xl:rounded-l-full"}`}>
+            selectedYear === e
+              ? "bg-lightgreen !text-black !border-lightgreen"
+              : "hover:bg-lightgreen hover:bg-opacity-15"
+          } ${i === 0 && "lg:rounded-l-full"}`}>
           {e}
         </button>
       ))}
       <button
         onClick={() => {
           setSelectedYear("0");
+          setItemsCount(50);
         }}
-        className={`self-center px-8 py-2 text-lg border text-lightgreen xl:rounded-r-full duration-200 ease-in-out ${
-          selectedYear === "0" && "bg-lightgreen !text-black !border-lightgreen"
+        className={`self-center px-8 py-2 text-lg border text-lightgreen lg:rounded-r-full duration-200 ease-in-out ${
+          selectedYear === "0"
+            ? "bg-lightgreen !text-black !border-lightgreen"
+            : "hover:bg-lightgreen hover:bg-opacity-15"
         }`}>
         All time
       </button>
