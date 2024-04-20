@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer className="bg-black py-16">
-      <p className="text-lightgreen text-center text-xl font-ssemibold">
+      <p className="text-lightgreen text-center text-xl font-normal">
         Developed with &hearts; by{" "}
         <a
           href="https://github.com/RenanL15"

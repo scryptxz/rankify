@@ -40,7 +40,7 @@ export default function FileUpload(props: FileUploadInterface) {
   return (
     <label
       htmlFor="file_upload"
-      className={`relative text-center py-5 px-10 border border-lightgreen cursor-pointer rounded-2xl hover:bg-lightgreen hover:bg-opacity-15 ${
+      className={`relative text-center py-5 px-10 border border-lightgreen cursor-pointer rounded-2xl hover:(bg-lightgreen bg-opacity-15) ${
         drop && "bg-lightgreen bg-opacity-5"
       }`}
       onDragEnter={() => setDrop(true)}

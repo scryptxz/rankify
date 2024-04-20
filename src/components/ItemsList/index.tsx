@@ -109,7 +109,9 @@ export default function ItemsList(props: FileData) {
       </ul>
 
       {ranking.slice(0, itemsCount).map((e, i) => (
-        <li className="flex items-center gap-4 text-nowrap w-full" key={i}>
+        <li
+          className="flex items-center gap-4 whitespace-nowrap w-full"
+          key={i}>
           <div className="relative w-full flex items-center justify-between gap-12 px-4 py-1 text-lightgreen rounded-full">
             <div
               className="absolute flex -left-2 transition-[width] duration-1000 ease-in-out"
@@ -144,7 +146,7 @@ export default function ItemsList(props: FileData) {
               </span>
             </div>
           </div>
-          <span className="text-lightgreen">
+          <span className="text-lightgreen font-semibold">
             {new Intl.NumberFormat().format(e.playCount)} times
           </span>
         </li>
@@ -153,7 +155,7 @@ export default function ItemsList(props: FileData) {
         onClick={() => {
           setItemsCount(itemsCount + 50);
         }}
-        className="flex items-center self-center gap-2 text-lg text-lightgreen hover:underline">
+        className="flex items-center self-center gap-2 text-lg font-semibold text-lightgreen hover:underline">
         Show more <PiCaretDownBold />
       </button>
     </ol>
