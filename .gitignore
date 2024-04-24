@@ -12,6 +12,7 @@ dist
 data
 dist-ssr
 *.local
+.env
 
 spotify_data.json
 

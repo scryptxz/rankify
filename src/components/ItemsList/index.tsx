@@ -3,6 +3,7 @@ import { count } from "../../utils/count";
 import { PiCaretDownBold } from "react-icons/pi";
 import YearButtons from "../YearButtons";
 import SearchItem from "../SearchItem";
+import MiniTrackPlayer from "../MiniTrackPlayer";
 
 interface SpotifyPlaybackEvent {
   ts: string;
@@ -22,6 +23,7 @@ interface RankingTypes {
   itemName: string;
   playCount: number;
   rank: string;
+  preview_url: string;
 }
 
 export default function ItemsList(props: FileData) {
@@ -56,13 +58,15 @@ export default function ItemsList(props: FileData) {
         category === "master_metadata_track_name" ||
         category === "master_metadata_album_album_name"
       ) {
-        return (
-          ((e as SpotifyPlaybackEvent)[category] || "Unknown") +
-          " - " +
-          e["master_metadata_album_artist_name"]
-        );
+        return {
+          item:
+            ((e as SpotifyPlaybackEvent)[category] || "Unknown") +
+            " - " +
+            e["master_metadata_album_artist_name"],
+          trackID: e.spotify_track_uri,
+        };
       } else {
-        return (e as any)[category] || "Unknown";
+        return { item: (e as any)[category] || "Unknown", trackID: "" };
       }
     });
 
@@ -70,6 +74,9 @@ export default function ItemsList(props: FileData) {
       ...e,
       rank: i + 1,
     }));
+
+    console.log(rankingCount);
+
     const filteredItemsBySearch = rankingCount.filter((a) =>
       a.itemName
         .toLocaleLowerCase()
@@ -107,6 +114,9 @@ export default function ItemsList(props: FileData) {
           key={i}
         >
           <div className="relative w-full flex items-center justify-between gap-12 px-4 py-1 text-lightgreen rounded-full">
+            {category === "master_metadata_track_name" && (
+              <MiniTrackPlayer TrackID={e.trackID} />
+            )}
             <div
               className="absolute flex -left-2 transition-[width] duration-1000 ease-in-out"
               style={{
@@ -119,7 +129,7 @@ export default function ItemsList(props: FileData) {
                 } bg-green rounded-full shadow-2xl`}
               ></span>
             </div>
-            <div className="z-10 flex items-center gap-6">
+            <div className="z-10 ml-8 flex items-center gap-6">
               <span className="font-bold text-light">{e.rank}º - </span>
               <span className="">
                 {(() => {
