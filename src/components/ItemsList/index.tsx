@@ -17,13 +17,20 @@ interface FileData {
   jsonData: SpotifyPlaybackEvent[];
   category: string;
 }
+
+interface RankingTypes {
+  itemName: string;
+  playCount: number;
+  rank: string;
+}
+
 export default function ItemsList(props: FileData) {
   const { jsonData, category } = props;
 
-  const [items, setItems] = useState<string[]>([]);
   const [itemsCount, setItemsCount] = useState<number>(50);
   const [playCount, setPlayCount] = useState(0);
   const [searchItem, setSearchItem] = useState("");
+  const [ranking, setRanking] = useState<RankingTypes[]>([]);
 
   const lastYear: string = new Date(jsonData[jsonData.length - 1].ts)
     .getFullYear()
@@ -36,37 +43,15 @@ export default function ItemsList(props: FileData) {
   };
 
   useEffect(() => {
-    const filteredItemsByYear = jsonData.filter((a) =>
-      a.ts.includes(selectedYear.toString())
+    const filteredItemsByYear = jsonData.filter(
+      (a) =>
+        a.ts.includes(selectedYear.toString()) &&
+        a.master_metadata_album_artist_name != null &&
+        a.master_metadata_album_album_name != null &&
+        a.master_metadata_track_name != null
     );
 
-    const filteredItemsBySearch = filteredItemsByYear.filter((a) => {
-      switch (category) {
-        case "master_metadata_track_name":
-          return (
-            a.master_metadata_track_name != null &&
-            a.master_metadata_track_name
-              .toLocaleLowerCase()
-              .includes(searchItem.toLocaleLowerCase().trim())
-          );
-        case "master_metadata_album_album_name":
-          return (
-            a.master_metadata_album_album_name != null &&
-            a.master_metadata_album_album_name
-              .toLocaleLowerCase()
-              .includes(searchItem.toLocaleLowerCase().trim())
-          );
-        default:
-          return (
-            a.master_metadata_album_artist_name != null &&
-            a.master_metadata_album_artist_name
-              .toLocaleLowerCase()
-              .includes(searchItem.toLocaleLowerCase().trim())
-          );
-      }
-    });
-
-    const items: string[] = filteredItemsBySearch.map((e) => {
+    const items: string[] = filteredItemsByYear.map((e) => {
       if (
         category === "master_metadata_track_name" ||
         category === "master_metadata_album_album_name"
@@ -81,17 +66,25 @@ export default function ItemsList(props: FileData) {
       }
     });
 
-    setItems(items);
-    setPlayCount(items.length);
-  }, [jsonData, category, selectedYear, searchItem]);
+    const rankingCount = count(items, "itemName", "playCount").map((e, i) => ({
+      ...e,
+      rank: i + 1,
+    }));
+    const filteredItemsBySearch = rankingCount.filter((a) =>
+      a.itemName
+        .toLocaleLowerCase()
+        .includes(searchItem.toLocaleLowerCase().trim())
+    );
 
-  const ranking = count(items, "itemName", "playCount");
+    setPlayCount(items.length);
+
+    setRanking(filteredItemsBySearch);
+  }, [jsonData, category, selectedYear, searchItem]);
 
   return (
     <ol className="relative flex flex-col w-full gap-6 px-5">
       <YearButtons
         jsonData={jsonData}
-        setItems={setItems}
         category={category}
         selectedYear={selectedYear}
         setSelectedYear={setSelectedYear}
@@ -111,20 +104,23 @@ export default function ItemsList(props: FileData) {
       {ranking.slice(0, itemsCount).map((e, i) => (
         <li
           className="flex items-center gap-4 whitespace-nowrap w-full"
-          key={i}>
+          key={i}
+        >
           <div className="relative w-full flex items-center justify-between gap-12 px-4 py-1 text-lightgreen rounded-full">
             <div
               className="absolute flex -left-2 transition-[width] duration-1000 ease-in-out"
               style={{
                 width: `${progressBar(ranking[0].playCount, e.playCount)}%`,
-              }}>
+              }}
+            >
               <span
                 className={`left-0 top-0 h-[32px] ${
                   itemsCount <= 50 ? "animate-progress" : "w-full"
-                } bg-green rounded-full shadow-2xl`}></span>
+                } bg-green rounded-full shadow-2xl`}
+              ></span>
             </div>
             <div className="z-10 flex items-center gap-6">
-              <span className="font-bold text-light">{i + 1}º - </span>
+              <span className="font-bold text-light">{e.rank}º - </span>
               <span className="">
                 {(() => {
                   const japaneseRegex =
@@ -151,13 +147,16 @@ export default function ItemsList(props: FileData) {
           </span>
         </li>
       ))}
-      <button
-        onClick={() => {
-          setItemsCount(itemsCount + 50);
-        }}
-        className="flex items-center self-center gap-2 text-lg font-semibold text-lightgreen hover:underline">
-        Show more <PiCaretDownBold />
-      </button>
+      {ranking.length > 50 && itemsCount < ranking.length && (
+        <button
+          onClick={() => {
+            setItemsCount(itemsCount + 50);
+          }}
+          className="flex items-center self-center gap-2 text-lg font-semibold text-lightgreen hover:underline"
+        >
+          Show more <PiCaretDownBold />
+        </button>
+      )}
     </ol>
   );
 }

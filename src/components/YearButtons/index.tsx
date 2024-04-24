@@ -13,7 +13,6 @@ interface SpotifyPlaybackEvent {
 }
 
 interface YearProps {
-  setItems: (value: string[]) => void;
   jsonData: SpotifyPlaybackEvent[];
   category: string;
   selectedYear: string;
@@ -59,7 +58,8 @@ export default function YearButtons(props: YearProps) {
             selectedYear === e
               ? "bg-lightgreen !text-black !border-lightgreen"
               : "hover:(bg-lightgreen bg-opacity-15)"
-          } ${i === 0 && "lg:rounded-l-full"}`}>
+          } ${i === 0 && "lg:rounded-l-full"}`}
+        >
           {e}
         </button>
       ))}
@@ -73,7 +73,8 @@ export default function YearButtons(props: YearProps) {
           selectedYear === "0"
             ? "bg-lightgreen !text-black !border-lightgreen"
             : "hover:(bg-lightgreen bg-opacity-15)"
-        }`}>
+        }`}
+      >
         All time
       </button>
     </nav>
