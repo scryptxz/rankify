@@ -16,6 +16,7 @@ interface YearProps {
   jsonData: SpotifyPlaybackEvent[];
   category: string;
   selectedYear: string;
+  itemsCount: number;
   setSelectedYear: (value: string) => void;
   setItemsCount: (value: number) => void;
   setSearchItem: (value: string) => void;
@@ -25,6 +26,7 @@ export default function YearButtons(props: YearProps) {
   const {
     jsonData,
     selectedYear,
+    itemsCount,
     setSelectedYear,
     setItemsCount,
     setSearchItem,
@@ -51,7 +53,7 @@ export default function YearButtons(props: YearProps) {
           key={i}
           onClick={() => {
             setSelectedYear(e);
-            setItemsCount(50);
+            setItemsCount(itemsCount);
             setSearchItem("");
           }}
           className={`self-center px-8 py-2 text-lg font-semibold border text-lightgreen duration-200 ease-in-out border-lightgreen ${
@@ -66,7 +68,7 @@ export default function YearButtons(props: YearProps) {
       <button
         onClick={() => {
           setSelectedYear("0");
-          setItemsCount(50);
+          setItemsCount(itemsCount);
           setSearchItem("");
         }}
         className={`self-center px-8 py-2 text-lg border border-lightgreen text-lightgreen lg:rounded-r-full duration-200 ease-in-out font-semibold ${

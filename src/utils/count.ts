@@ -21,8 +21,6 @@ export function count(
     // trackIDs[value.item] = value.trackID;
   });
 
-  // console.log(counts);
-
   return Object.keys(counts)
     .map((key: any) => {
       const obj: any = {};

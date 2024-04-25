@@ -3,7 +3,7 @@ import { count } from "../../utils/count";
 import { PiCaretDownBold } from "react-icons/pi";
 import YearButtons from "../YearButtons";
 import SearchItem from "../SearchItem";
-import MiniTrackPlayer from "../MiniTrackPlayer";
+// import MiniTrackPlayer from "../MiniTrackPlayer";
 
 interface SpotifyPlaybackEvent {
   ts: string;
@@ -59,16 +59,16 @@ export default function ItemsList(props: FileData) {
     };
 
     const items: ItemsTypes[] = filteredItemsByYear.map((e) => {
-      if (category === "master_metadata_track_name") {
+      if (category == "master_metadata_track_name") {
         return {
           item:
-            ((e as SpotifyPlaybackEvent)[category] || "Unknown") +
+            (e as SpotifyPlaybackEvent)[category] +
             " - " +
             e["master_metadata_album_artist_name"],
           trackID: e["spotify_track_uri"],
         };
       } else {
-        return { item: (e as any)[category] || "Unknown", trackID: "s" };
+        return { item: (e as any)[category], trackID: "" };
       }
     });
 
@@ -79,7 +79,7 @@ export default function ItemsList(props: FileData) {
       })
     );
 
-    console.log(rankingCount);
+    // console.log(rankingCount);
 
     const filteredItemsBySearch = rankingCount.filter((a) =>
       a.itemName
@@ -90,7 +90,7 @@ export default function ItemsList(props: FileData) {
     setPlayCount(items.length);
 
     setRanking(filteredItemsBySearch);
-  }, []);
+  }, [jsonData, selectedYear, category, searchItem]);
 
   return (
     <ol className="relative flex flex-col w-full gap-6 px-5">
@@ -98,6 +98,7 @@ export default function ItemsList(props: FileData) {
         jsonData={jsonData}
         category={category}
         selectedYear={selectedYear}
+        itemsCount={itemsCount}
         setSelectedYear={setSelectedYear}
         setItemsCount={setItemsCount}
         setSearchItem={setSearchItem}
@@ -118,13 +119,18 @@ export default function ItemsList(props: FileData) {
           key={i}
         >
           <div className="relative w-full flex items-center justify-between gap-12 px-4 py-1 text-lightgreen rounded-full">
-            {category === "master_metadata_track_name" && (
-              <MiniTrackPlayer
-                TrackID={e.trackID}
-                category={category}
-                selectedYear={selectedYear}
-              />
-            )}
+            {/* {category === "master_metadata_track_name" && (
+              <>
+                <MiniTrackPlayer
+                  TrackID={e.trackID}
+                  category={category}
+                  selectedYear={selectedYear}
+                />
+                {(() => {
+                  console.log(e);
+                })()}
+              </>
+            )} */}
             <div
               className="absolute flex -left-2 transition-[width] duration-1000 ease-in-out"
               style={{
@@ -137,7 +143,7 @@ export default function ItemsList(props: FileData) {
                 } bg-green rounded-full shadow-2xl`}
               ></span>
             </div>
-            <div className="z-10 ml-8 flex items-center gap-6">
+            <div className="z-10 flex items-center gap-6">
               <span className="font-bold text-light">{e.rank}º - </span>
               <span className="">
                 {(() => {

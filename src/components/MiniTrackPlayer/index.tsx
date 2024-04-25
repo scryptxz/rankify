@@ -9,9 +9,9 @@ interface MiniTrackPlayerProps {
   selectedYear: string;
 }
 
-type TrackTypes = {
+interface TrackTypes {
   preview_url: string;
-};
+}
 
 export default function MiniTrackPlayer(props: MiniTrackPlayerProps) {
   const { TrackID, category, selectedYear } = props;
@@ -30,9 +30,6 @@ export default function MiniTrackPlayer(props: MiniTrackPlayerProps) {
       )
       .then((res) => {
         // console.log(res);
-        console.log(selectedYear);
-        console.log(category);
-        console.log(TrackID);
 
         console.log(`https://api.spotify.com/v1/tracks/${TrackID}`);
 
