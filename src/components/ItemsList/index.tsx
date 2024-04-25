@@ -23,7 +23,7 @@ interface RankingTypes {
   itemName: string;
   playCount: number;
   rank: string;
-  preview_url: string;
+  trackID: string;
 }
 
 export default function ItemsList(props: FileData) {
@@ -53,27 +53,31 @@ export default function ItemsList(props: FileData) {
         a.master_metadata_track_name != null
     );
 
-    const items: string[] = filteredItemsByYear.map((e) => {
-      if (
-        category === "master_metadata_track_name" ||
-        category === "master_metadata_album_album_name"
-      ) {
+    type ItemsTypes = {
+      item: string;
+      trackID: string;
+    };
+
+    const items: ItemsTypes[] = filteredItemsByYear.map((e) => {
+      if (category === "master_metadata_track_name") {
         return {
           item:
             ((e as SpotifyPlaybackEvent)[category] || "Unknown") +
             " - " +
             e["master_metadata_album_artist_name"],
-          trackID: e.spotify_track_uri,
+          trackID: e["spotify_track_uri"],
         };
       } else {
-        return { item: (e as any)[category] || "Unknown", trackID: "" };
+        return { item: (e as any)[category] || "Unknown", trackID: "s" };
       }
     });
 
-    const rankingCount = count(items, "itemName", "playCount").map((e, i) => ({
-      ...e,
-      rank: i + 1,
-    }));
+    const rankingCount = count(items, "itemName", "playCount", "trackID").map(
+      (e, i) => ({
+        ...e,
+        rank: i + 1,
+      })
+    );
 
     console.log(rankingCount);
 
@@ -86,7 +90,7 @@ export default function ItemsList(props: FileData) {
     setPlayCount(items.length);
 
     setRanking(filteredItemsBySearch);
-  }, [jsonData, category, selectedYear, searchItem]);
+  }, []);
 
   return (
     <ol className="relative flex flex-col w-full gap-6 px-5">
@@ -115,7 +119,11 @@ export default function ItemsList(props: FileData) {
         >
           <div className="relative w-full flex items-center justify-between gap-12 px-4 py-1 text-lightgreen rounded-full">
             {category === "master_metadata_track_name" && (
-              <MiniTrackPlayer TrackID={e.trackID} />
+              <MiniTrackPlayer
+                TrackID={e.trackID}
+                category={category}
+                selectedYear={selectedYear}
+              />
             )}
             <div
               className="absolute flex -left-2 transition-[width] duration-1000 ease-in-out"

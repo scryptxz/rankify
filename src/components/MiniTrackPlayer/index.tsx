@@ -5,6 +5,8 @@ import { PiPlayBold } from "react-icons/pi";
 
 interface MiniTrackPlayerProps {
   TrackID: string;
+  category: string;
+  selectedYear: string;
 }
 
 type TrackTypes = {
@@ -12,7 +14,7 @@ type TrackTypes = {
 };
 
 export default function MiniTrackPlayer(props: MiniTrackPlayerProps) {
-  const { TrackID } = props;
+  const { TrackID, category, selectedYear } = props;
 
   const [trackURL, setTrackURL] = useState<TrackTypes>({ preview_url: "" });
 
@@ -27,21 +29,28 @@ export default function MiniTrackPlayer(props: MiniTrackPlayerProps) {
         })
       )
       .then((res) => {
+        // console.log(res);
+        console.log(selectedYear);
+        console.log(category);
+        console.log(TrackID);
+
+        console.log(`https://api.spotify.com/v1/tracks/${TrackID}`);
+
         axios
           .get(`https://api.spotify.com/v1/tracks/${TrackID}`, {
             headers: {
               Authorization: `Bearer ${res.data.access_token}`,
             },
           })
-          .then((e: any) => {
-            console.log(e);
-
+          .then((res: any) => {
             setTrackURL({
-              preview_url: e.data.preview_url,
+              preview_url: res.data.preview_url,
             });
-          });
-      });
-  }, []);
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
+  }, [category, selectedYear]);
 
   const playTrack = () => {
     const audio = new Audio(trackURL.preview_url);
