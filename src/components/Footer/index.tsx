@@ -4,9 +4,10 @@ export default function Footer() {
       <p className="text-lightgreen text-center text-xl font-normal">
         Developed with &hearts; by{" "}
         <a
-          href="https://github.com/RenanL15"
+          href="https://github.com/ScryptRG"
           target="_blank"
-          className="text-light hover:underline">
+          className="text-light hover:underline"
+        >
           RenanL
         </a>{" "}
         &copy; 2024
