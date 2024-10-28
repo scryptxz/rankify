@@ -17,7 +17,7 @@ interface FileUploadInterface {
 }
 
 export default function FileUpload(props: FileUploadInterface) {
-  const { inputFile, setInputFile, setLoading, setShowContent } = props;
+  const { setInputFile, setLoading, setShowContent } = props;
   const [drop, setDrop] = useState<boolean>(false);
 
   function handleJSON(e: ChangeEvent<HTMLInputElement>) {
