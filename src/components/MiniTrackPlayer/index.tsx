@@ -39,7 +39,7 @@ export default function MiniTrackPlayer(props: MiniTrackPlayerProps) {
               Authorization: `Bearer ${res.data.access_token}`,
             },
           })
-          .then((res: any) => {
+          .then((res) => {
             setTrackURL({
               preview_url: res.data.preview_url,
             });

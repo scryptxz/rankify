@@ -1,39 +1,56 @@
 import { ChangeEvent, useState } from "react";
 import { RiExternalLinkLine } from "react-icons/ri";
-
+interface SpotifyPlaybackEvent {
+  ts: string;
+  username: string;
+  platform: string;
+  master_metadata_track_name: string;
+  master_metadata_album_artist_name: string;
+  master_metadata_album_album_name: string;
+  spotify_track_uri: string;
+}
 interface FileUploadInterface {
-  setInputFile: (value: any) => void;
-  setLoading: (value: any) => void;
-  setShowContent: (value: any) => void;
+  inputFile: SpotifyPlaybackEvent[];
+  setInputFile: (value: SpotifyPlaybackEvent[]) => void;
+  setLoading: (value: boolean) => void;
+  setShowContent: (value: boolean) => void;
 }
 
 export default function FileUpload(props: FileUploadInterface) {
-  const { setInputFile, setLoading, setShowContent } = props;
+  const { inputFile, setInputFile, setLoading, setShowContent } = props;
   const [drop, setDrop] = useState<boolean>(false);
 
   function handleJSON(e: ChangeEvent<HTMLInputElement>) {
     const target = e.target as HTMLInputElement;
-    const file = target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
+    const files = target.files;
 
-      reader.onloadstart = () => {
-        setLoading(true);
-      };
-
-      reader.onloadend = (e: ProgressEvent<FileReader>) => {
-        try {
-          const data = e.target?.result as string;
-          const json = JSON.parse(data);
-          setInputFile(json);
-          setLoading(false);
-          setShowContent(true);
-        } catch (error) {
-          alert("Invalid file!");
-          setLoading(false);
-        }
-      };
-      reader.readAsText(file);
+    if (files) {
+      let concatFiles: SpotifyPlaybackEvent[] = [];
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        const element = files[i];
+        reader.readAsText(element);
+        reader.onloadstart = () => {
+          setLoading(true);
+        };
+        reader.onloadend = (e: ProgressEvent<FileReader>) => {
+          try {
+            const data = e.target?.result as string;
+            const json = JSON.parse(data);
+            concatFiles = concatFiles.concat(json);
+            console.log(concatFiles);
+            setShowContent(true);
+            console.log(i);
+          } catch (error) {
+            alert("Invalid file!");
+            setLoading(false);
+          } finally {
+            setInputFile(concatFiles);
+            setLoading(false);
+            reader.abort();
+          }
+        };
+      }
     } else {
       alert("Error");
     }

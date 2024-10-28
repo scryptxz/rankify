@@ -8,7 +8,7 @@ export default function Footer() {
           target="_blank"
           className="text-light hover:underline"
         >
-          RenanL
+          Scrypt
         </a>{" "}
         &copy; 2024
       </p>

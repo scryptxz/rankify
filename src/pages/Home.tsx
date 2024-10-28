@@ -7,8 +7,18 @@ import FileUpload from "../components/FileUpload";
 import { RaceBy } from "@uiball/loaders";
 import Footer from "../components/Footer";
 
+interface SpotifyPlaybackEvent {
+  ts: string;
+  username: string;
+  platform: string;
+  master_metadata_track_name: string;
+  master_metadata_album_artist_name: string;
+  master_metadata_album_album_name: string;
+  spotify_track_uri: string;
+}
+
 export default function Home() {
-  const [inputFile, setInputFile] = useState([]);
+  const [inputFile, setInputFile] = useState<SpotifyPlaybackEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [showContent, setShowContent] = useState<boolean>(false);
   const [category, setCategory] = useState("master_metadata_album_artist_name");
@@ -19,6 +29,7 @@ export default function Home() {
         <section className="flex flex-col items-center m-auto gap-8 max-w-[60rem]">
           <img src={Logo} alt="Rankify logo" width={200} />
           <FileUpload
+            inputFile={inputFile}
             setInputFile={setInputFile}
             setLoading={setLoading}
             setShowContent={setShowContent}
