@@ -119,18 +119,6 @@ export default function ItemsList(props: FileData) {
           key={i}
         >
           <div className="relative w-full flex items-center justify-between gap-12 px-4 py-1 text-lightgreen rounded-full">
-            {/* {category === "master_metadata_track_name" && (
-              <>
-                <MiniTrackPlayer
-                  TrackID={e.trackID}
-                  category={category}
-                  selectedYear={selectedYear}
-                />
-                {(() => {
-                  console.log(e);
-                })()}
-              </>
-            )} */}
             <div
               className="absolute flex -left-2 transition-[width] duration-1000 ease-in-out"
               style={{

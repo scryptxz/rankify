@@ -19,8 +19,7 @@ interface SpotifyPlaybackEvent {
 
 export default function Home() {
   const [inputFile, setInputFile] = useState<SpotifyPlaybackEvent[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [showContent, setShowContent] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean | null>(null);
   const [category, setCategory] = useState("master_metadata_album_artist_name");
 
   return (
@@ -32,10 +31,9 @@ export default function Home() {
             inputFile={inputFile}
             setInputFile={setInputFile}
             setLoading={setLoading}
-            setShowContent={setShowContent}
           />
           {loading && <RaceBy size={150} color="#DAFFD6" lineWeight={6} />}
-          {showContent && (
+          {loading === false && (
             <>
               <CategoryButtons category={category} setCategory={setCategory} />
               <ItemsList jsonData={inputFile} category={category} />

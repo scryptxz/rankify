@@ -31,19 +31,19 @@ export default function YearButtons(props: YearProps) {
     setItemsCount,
     setSearchItem,
   } = props;
-  const [years, setYears] = useState<string[]>([]);
+  const [years, setYears] = useState<number[]>([]);
 
   useEffect(() => {
-    const years: string[] = [];
+    const years: number[] = [];
 
     jsonData.forEach((e) => {
-      const year: string = new Date(e.ts).getFullYear().toString();
+      const year: number = new Date(e.ts).getFullYear();
       if (!years.includes(year)) {
         years.push(year);
       }
     });
 
-    setYears(years.reverse());
+    setYears(years.sort((a: number, b: number) => b - a));
   }, [jsonData]);
 
   return (
@@ -52,12 +52,12 @@ export default function YearButtons(props: YearProps) {
         <button
           key={i}
           onClick={() => {
-            setSelectedYear(e);
+            setSelectedYear(e.toString());
             setItemsCount(itemsCount);
             setSearchItem("");
           }}
           className={`self-center px-8 py-2 text-lg font-semibold border text-lightgreen duration-200 ease-in-out border-lightgreen ${
-            selectedYear === e
+            selectedYear === e.toString()
               ? "bg-lightgreen !text-black !border-lightgreen"
               : "hover:(bg-lightgreen bg-opacity-15)"
           } ${i === 0 && "lg:rounded-l-full"}`}

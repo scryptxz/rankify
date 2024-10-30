@@ -13,11 +13,10 @@ interface FileUploadInterface {
   inputFile: SpotifyPlaybackEvent[];
   setInputFile: (value: SpotifyPlaybackEvent[]) => void;
   setLoading: (value: boolean) => void;
-  setShowContent: (value: boolean) => void;
 }
 
 export default function FileUpload(props: FileUploadInterface) {
-  const { setInputFile, setLoading, setShowContent } = props;
+  const { setInputFile, setLoading } = props;
   const [drop, setDrop] = useState<boolean>(false);
 
   function handleJSON(e: ChangeEvent<HTMLInputElement>) {
@@ -30,24 +29,22 @@ export default function FileUpload(props: FileUploadInterface) {
         const reader = new FileReader();
         const element = files[i];
         reader.readAsText(element);
-        reader.onloadstart = () => {
+        reader.onloadstart = (e) => {
+          console.log(e);
           setLoading(true);
         };
         reader.onloadend = (e: ProgressEvent<FileReader>) => {
+          console.log(e);
           try {
             const data = e.target?.result as string;
             const json = JSON.parse(data);
             concatFiles = concatFiles.concat(json);
-            console.log(concatFiles);
-            setShowContent(true);
-            console.log(i);
           } catch (error) {
             alert("Invalid file!");
             setLoading(false);
           } finally {
             setInputFile(concatFiles);
-            setLoading(false);
-            reader.abort();
+            // setLoading(false);
           }
         };
       }
