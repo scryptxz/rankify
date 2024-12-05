@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { RiExternalLinkLine } from "react-icons/ri";
 interface SpotifyPlaybackEvent {
   ts: string;
@@ -16,21 +16,25 @@ interface FileUploadInterface {
 }
 
 export default function FileUpload(props: FileUploadInterface) {
-  const { setInputFile, setLoading } = props;
+  const { setInputFile, setLoading, inputFile } = props;
   const [drop, setDrop] = useState<boolean>(false);
+  const [userFiles, setUserFiles] = useState<FileList | null>();
+  const [count, setCount] = useState(0);
 
   function handleJSON(e: ChangeEvent<HTMLInputElement>) {
+    setCount(0);
     const target = e.target as HTMLInputElement;
     const files = target.files;
 
+    setUserFiles(files);
     if (files) {
       let concatFiles: SpotifyPlaybackEvent[] = [];
       for (let i = 0; i < files.length; i++) {
+        console.log(i);
         const reader = new FileReader();
         const element = files[i];
         reader.readAsText(element);
-        reader.onloadstart = (e) => {
-          console.log(e);
+        reader.onloadstart = () => {
           setLoading(true);
         };
         reader.onloadend = (e: ProgressEvent<FileReader>) => {
@@ -39,12 +43,12 @@ export default function FileUpload(props: FileUploadInterface) {
             const data = e.target?.result as string;
             const json = JSON.parse(data);
             concatFiles = concatFiles.concat(json);
+            setInputFile(concatFiles);
           } catch (error) {
             alert("Invalid file!");
             setLoading(false);
           } finally {
-            setInputFile(concatFiles);
-            // setLoading(false);
+            setCount((prev) => prev + 1);
           }
         };
       }
@@ -52,6 +56,11 @@ export default function FileUpload(props: FileUploadInterface) {
       alert("Error");
     }
   }
+
+  useEffect(() => {
+    userFiles?.length === count && setLoading(false);
+  }, [userFiles?.length, count, setLoading, inputFile]);
+
   return (
     <div>
       <label
@@ -61,10 +70,9 @@ export default function FileUpload(props: FileUploadInterface) {
         }`}
         onDragEnter={() => setDrop(true)}
         onDragLeave={() => setDrop(false)}
-        onDrop={() => setDrop(false)}
-      >
+        onDrop={() => setDrop(false)}>
         <strong className="text-xl font-bold text-lightgreen my-auto">
-          {drop ? "Drop here" : "Upload/Drop your spotify history file (JSON)"}
+          {drop ? "Drop here" : "Upload/Drop your spotify history files (JSON)"}
         </strong>
         <input
           type="file"
@@ -79,8 +87,7 @@ export default function FileUpload(props: FileUploadInterface) {
       <a
         href="https://www.spotify.com/account/privacy/"
         target="_blank"
-        className="flex items-center justify-center gap-2 mt-2 text-light font-normal hover:underline"
-      >
+        className="flex items-center justify-center gap-2 mt-2 text-light font-normal hover:underline">
         Request your data file here
         <RiExternalLinkLine />
       </a>

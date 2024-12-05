@@ -68,7 +68,7 @@ export default function ItemsList(props: FileData) {
           trackID: e["spotify_track_uri"],
         };
       } else {
-        return { item: (e as any)[category], trackID: "" };
+        return { item: e[category as keyof SpotifyPlaybackEvent], trackID: "" };
       }
     });
 
@@ -116,20 +116,17 @@ export default function ItemsList(props: FileData) {
       {ranking.slice(0, itemsCount).map((e, i) => (
         <li
           className="flex items-center gap-4 whitespace-nowrap w-full"
-          key={i}
-        >
+          key={i}>
           <div className="relative w-full flex items-center justify-between gap-12 px-4 py-1 text-lightgreen rounded-full">
             <div
               className="absolute flex -left-2 transition-[width] duration-1000 ease-in-out"
               style={{
                 width: `${progressBar(ranking[0].playCount, e.playCount)}%`,
-              }}
-            >
+              }}>
               <span
                 className={`left-0 top-0 h-[32px] ${
                   itemsCount <= 50 ? "animate-progress" : "w-full"
-                } bg-green rounded-full shadow-2xl`}
-              ></span>
+                } bg-green rounded-full shadow-2xl`}></span>
             </div>
             <div className="z-10 flex items-center gap-6">
               <span className="font-bold text-light">{e.rank}º - </span>
@@ -164,8 +161,7 @@ export default function ItemsList(props: FileData) {
           onClick={() => {
             setItemsCount(itemsCount + 50);
           }}
-          className="flex items-center self-center gap-2 text-lg font-semibold text-lightgreen hover:underline"
-        >
+          className="flex items-center self-center gap-2 text-lg font-semibold text-lightgreen hover:underline">
           Show more <PiCaretDownBold />
         </button>
       )}
