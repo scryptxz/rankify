@@ -15,25 +15,17 @@ type ItemsTypes = {
 
 type ObjTypes = {
   itemName: string;
-  playCount: string;
+  playCount: number;
   trackID: string;
 };
 
-export function count(
-  arr: ItemsTypes[],
-  nameLabel: string,
-  countLabel: string,
-  trackLabel: string
-) {
+export function count(arr: ItemsTypes[]) {
   const counts: CountTypes = {
     item: {
       id: "",
       count: 0,
     },
   };
-  nameLabel = nameLabel || "value";
-  countLabel = countLabel || "count";
-  trackLabel = trackLabel || "id";
 
   arr.forEach((value: ItemsTypes) => {
     counts[value.item as keyof CountTypes]
@@ -50,19 +42,13 @@ export function count(
   return Object.keys(counts)
     .map((key: string) => {
       const obj: ObjTypes = {
-        itemName: "",
-        playCount: "",
-        trackID: "",
+        itemName: key,
+        playCount: counts[key].count,
+        trackID: counts[key].id,
       };
-      obj[nameLabel as keyof ObjTypes] = key;
-      obj[countLabel as keyof ObjTypes] = counts[key].count.toString();
-      obj[trackLabel as keyof ObjTypes] = counts[key].id;
       return obj;
     })
     .sort((a, b) => {
-      return (
-        Number(b[countLabel as keyof ObjTypes]) -
-        Number(a[countLabel as keyof ObjTypes])
-      );
+      return b.playCount - a.playCount;
     });
 }

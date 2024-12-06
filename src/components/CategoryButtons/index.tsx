@@ -12,7 +12,7 @@ export default function CategoryButtons(props: ButtonsProps) {
         className={`px-5 py-2 border border-lightgreen rounded-l-full duration-200 ease-in-out font-semibold ${
           category === "master_metadata_album_artist_name"
             ? "bg-lightgreen text-black"
-            : "hover:(bg-lightgreen bg-opacity-15)"
+            : "hover:bg-lightgreen hover:bg-opacity-15"
         }`}>
         Top Artists
       </button>
@@ -21,7 +21,7 @@ export default function CategoryButtons(props: ButtonsProps) {
         className={`px-5 py-2 border border-lightgreen duration-200 ease-in-out font-semibold ${
           category === "master_metadata_album_album_name"
             ? "bg-lightgreen text-black"
-            : "hover:(bg-lightgreen bg-opacity-15)"
+            : "hover:bg-lightgreen hover:bg-opacity-15"
         }`}>
         Top Albums
       </button>
@@ -30,7 +30,7 @@ export default function CategoryButtons(props: ButtonsProps) {
         className={`px-5 py-2 border border-lightgreen rounded-r-full duration-200 ease-in-out font-semibold ${
           category === "master_metadata_track_name"
             ? "bg-lightgreen text-black"
-            : "hover:(bg-lightgreen bg-opacity-15)"
+            : "hover:bg-lightgreen hover:bg-opacity-15"
         }`}>
         Top Tracks
       </button>

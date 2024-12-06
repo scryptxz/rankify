@@ -20,9 +20,9 @@ interface FileData {
 }
 
 interface RankingTypes {
+  rank: number;
   itemName: string;
   playCount: number;
-  rank: string;
   trackID: string;
 }
 
@@ -41,7 +41,7 @@ export default function ItemsList(props: FileData) {
 
   const progressBar = (firstValue: number, currentValue: number) => {
     const x: number = currentValue / firstValue;
-    return x * 100;
+    return x * 93;
   };
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function ItemsList(props: FileData) {
     };
 
     const items: ItemsTypes[] = filteredItemsByYear.map((e) => {
-      if (category == "master_metadata_track_name") {
+      if (category === "master_metadata_track_name") {
         return {
           item:
             (e as SpotifyPlaybackEvent)[category] +
@@ -68,20 +68,25 @@ export default function ItemsList(props: FileData) {
           trackID: e["spotify_track_uri"],
         };
       } else {
+        if (category === "master_metadata_album_album_name") {
+          return {
+            item:
+              (e as SpotifyPlaybackEvent)[category] +
+              " - " +
+              e["master_metadata_album_artist_name"],
+            trackID: e["spotify_track_uri"],
+          };
+        }
         return { item: e[category as keyof SpotifyPlaybackEvent], trackID: "" };
       }
     });
 
-    const rankingCount = count(items, "itemName", "playCount", "trackID").map(
-      (e, i) => ({
-        ...e,
-        rank: i + 1,
-      })
-    );
+    const rankingCount: RankingTypes[] = count(items).map((e, i) => ({
+      ...e,
+      rank: i + 1,
+    }));
 
-    // console.log(rankingCount);
-
-    const filteredItemsBySearch = rankingCount.filter((a) =>
+    const filteredItemsBySearch: RankingTypes[] = rankingCount.filter((a) =>
       a.itemName
         .toLocaleLowerCase()
         .includes(searchItem.toLocaleLowerCase().trim())
@@ -109,29 +114,30 @@ export default function ItemsList(props: FileData) {
         category={category}
       />
 
-      <ul className="flex gap-12 justify-center text-lightgreen">
+      <ul className="flex flex-col items-center gap-8 justify-between text-lightgreen">
         <li>Play count: {new Intl.NumberFormat().format(playCount)}</li>
-      </ul>
-
-      {ranking.slice(0, itemsCount).map((e, i) => (
-        <li
-          className="flex items-center gap-4 whitespace-nowrap w-full"
-          key={i}>
-          <div className="relative w-full flex items-center justify-between gap-12 px-4 py-1 text-lightgreen rounded-full">
+        {ranking.slice(0, itemsCount).map((e, i) => (
+          <li className="flex items-center whitespace-nowrap w-full" key={i}>
             <div
               className="absolute flex -left-2 transition-[width] duration-1000 ease-in-out"
               style={{
                 width: `${progressBar(ranking[0].playCount, e.playCount)}%`,
               }}>
               <span
-                className={`left-0 top-0 h-[32px] ${
+                className={`left-0 top-0 h-[40px] ${
                   itemsCount <= 50 ? "animate-progress" : "w-full"
-                } bg-green rounded-full shadow-2xl`}></span>
+                } bg-green rounded-full shadow-2xl bg-opacity-50`}></span>
             </div>
-            <div className="z-10 flex items-center gap-6">
-              <span className="font-bold text-light">{e.rank}º - </span>
-              <span className="">
-                {(() => {
+            <div className="z-10 flex items-center gap-3">
+              <span className="font-bold text-light w-8">{e.rank}º </span>
+              <img
+                src="https://picsum.photos/160/160"
+                alt="dasd"
+                width={25}
+                className="rounded-full"
+              />
+              <span className="overflow-x-hidden text-ellipsis">
+                {/* {(() => {
                   const japaneseRegex =
                     /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/;
                   if (window.innerWidth < 550 && e.itemName.length > 35) {
@@ -147,15 +153,17 @@ export default function ItemsList(props: FileData) {
                   } else {
                     return e.itemName;
                   }
-                })()}
+                })()} */}
+                {e.itemName}
               </span>
             </div>
-          </div>
-          <span className="text-lightgreen font-semibold">
-            {new Intl.NumberFormat().format(e.playCount)} times
-          </span>
-        </li>
-      ))}
+            <span className="text-lightgreen font-semibold z-20 text-end absolute right-0">
+              {new Intl.NumberFormat().format(e.playCount)} times
+            </span>
+          </li>
+        ))}
+      </ul>
+
       {ranking.length > 50 && itemsCount < ranking.length && (
         <button
           onClick={() => {

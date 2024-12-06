@@ -29,8 +29,6 @@ export default function MiniTrackPlayer(props: MiniTrackPlayerProps) {
         })
       )
       .then((res) => {
-        // console.log(res);
-
         console.log(`https://api.spotify.com/v1/tracks/${TrackID}`);
 
         axios
@@ -47,7 +45,7 @@ export default function MiniTrackPlayer(props: MiniTrackPlayerProps) {
           .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
-  }, [category, selectedYear]);
+  }, [category, selectedYear, TrackID]);
 
   const playTrack = () => {
     const audio = new Audio(trackURL.preview_url);

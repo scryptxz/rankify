@@ -24,7 +24,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="min-h-screen pt-8 pb-20 bg-primary !font-mono font-semibold">
+      <main className="min-h-[100svh] pt-8 pb-20 bg-primary font-semibold">
         <section className="flex flex-col items-center m-auto gap-8 max-w-[60rem]">
           <img src={Logo} alt="Rankify logo" width={200} />
           <FileUpload
