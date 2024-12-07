@@ -4,8 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  font-family: "Dosis", serif;
+body {
+  font-family: "Dosis", sans-serif;
 }
 
 input,

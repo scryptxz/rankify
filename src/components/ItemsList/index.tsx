@@ -5,7 +5,7 @@ import YearButtons from "../YearButtons";
 import SearchItem from "../SearchItem";
 // import MiniTrackPlayer from "../MiniTrackPlayer";
 
-interface SpotifyPlaybackEvent {
+type SpotifyPlaybackEvent = {
   ts: string;
   username: string;
   platform: string;
@@ -13,18 +13,23 @@ interface SpotifyPlaybackEvent {
   master_metadata_album_artist_name: string;
   master_metadata_album_album_name: string;
   spotify_track_uri: string;
-}
-interface FileData {
+};
+type FileData = {
   jsonData: SpotifyPlaybackEvent[];
   category: string;
-}
+};
 
-interface RankingTypes {
+type RankingTypes = {
   rank: number;
   itemName: string;
   playCount: number;
   trackID: string;
-}
+};
+
+type ItemsTypes = {
+  item: string;
+  trackID: string;
+};
 
 export default function ItemsList(props: FileData) {
   const { jsonData, category } = props;
@@ -41,7 +46,7 @@ export default function ItemsList(props: FileData) {
 
   const progressBar = (firstValue: number, currentValue: number) => {
     const x: number = currentValue / firstValue;
-    return x * 93;
+    return x * 91;
   };
 
   useEffect(() => {
@@ -53,13 +58,11 @@ export default function ItemsList(props: FileData) {
         a.master_metadata_track_name != null
     );
 
-    type ItemsTypes = {
-      item: string;
-      trackID: string;
-    };
-
     const items: ItemsTypes[] = filteredItemsByYear.map((e) => {
-      if (category === "master_metadata_track_name") {
+      if (
+        category === "master_metadata_track_name" ||
+        category === "master_metadata_album_album_name"
+      ) {
         return {
           item:
             (e as SpotifyPlaybackEvent)[category] +
@@ -67,18 +70,8 @@ export default function ItemsList(props: FileData) {
             e["master_metadata_album_artist_name"],
           trackID: e["spotify_track_uri"],
         };
-      } else {
-        if (category === "master_metadata_album_album_name") {
-          return {
-            item:
-              (e as SpotifyPlaybackEvent)[category] +
-              " - " +
-              e["master_metadata_album_artist_name"],
-            trackID: e["spotify_track_uri"],
-          };
-        }
-        return { item: e[category as keyof SpotifyPlaybackEvent], trackID: "" };
       }
+      return { item: e[category as keyof SpotifyPlaybackEvent], trackID: "" };
     });
 
     const rankingCount: RankingTypes[] = count(items).map((e, i) => ({
@@ -98,7 +91,7 @@ export default function ItemsList(props: FileData) {
   }, [jsonData, selectedYear, category, searchItem]);
 
   return (
-    <ol className="relative flex flex-col w-full gap-6 px-5">
+    <div className="relative flex flex-col w-full gap-6 px-5">
       <YearButtons
         jsonData={jsonData}
         category={category}
@@ -130,30 +123,7 @@ export default function ItemsList(props: FileData) {
             </div>
             <div className="z-10 flex items-center gap-3">
               <span className="font-bold text-light w-8">{e.rank}º </span>
-              <img
-                src="https://picsum.photos/160/160"
-                alt="dasd"
-                width={25}
-                className="rounded-full"
-              />
               <span className="overflow-x-hidden text-ellipsis">
-                {/* {(() => {
-                  const japaneseRegex =
-                    /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/;
-                  if (window.innerWidth < 550 && e.itemName.length > 35) {
-                    if (window.innerWidth < 450 && e.itemName.length > 28) {
-                      return e.itemName.slice(0, 28) + "...";
-                    } else {
-                      if (japaneseRegex.test(e.itemName)) {
-                        return e.itemName.slice(0, 1) + "...";
-                      } else {
-                        return e.itemName.slice(0, 35) + "...";
-                      }
-                    }
-                  } else {
-                    return e.itemName;
-                  }
-                })()} */}
                 {e.itemName}
               </span>
             </div>
@@ -173,6 +143,6 @@ export default function ItemsList(props: FileData) {
           Show more <PiCaretDownBold />
         </button>
       )}
-    </ol>
+    </div>
   );
 }
