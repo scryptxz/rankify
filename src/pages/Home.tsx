@@ -26,7 +26,7 @@ export default function Home() {
     <>
       <main className="min-h-[100svh] pt-8 pb-20 bg-primary font-semibold">
         <section className="flex flex-col items-center m-auto gap-8 max-w-[60rem]">
-          <img src={Logo} alt="Rankify logo" width={200} />
+          <img src={Logo} alt="Rankify logo" width={150} />
           <FileUpload
             inputFile={inputFile}
             setInputFile={setInputFile}

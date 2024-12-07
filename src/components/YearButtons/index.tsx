@@ -56,7 +56,7 @@ export default function YearButtons(props: YearProps) {
             setItemsCount(itemsCount);
             setSearchItem("");
           }}
-          className={`self-center px-8 py-2 text-lg font-semibold border text-lightgreen duration-200 ease-in-out border-lightgreen ${
+          className={`self-center px-8 py-2  font-semibold border text-lightgreen duration-200 ease-in-out border-lightgreen ${
             selectedYear === e.toString()
               ? "bg-lightgreen !text-black !border-lightgreen"
               : "hover:bg-lightgreen hover:bg-opacity-15"
@@ -70,7 +70,7 @@ export default function YearButtons(props: YearProps) {
           setItemsCount(itemsCount);
           setSearchItem("");
         }}
-        className={`self-center px-8 py-2 text-lg border border-lightgreen text-lightgreen lg:rounded-r-full duration-200 ease-in-out font-semibold ${
+        className={`self-center px-8 py-2  border border-lightgreen text-lightgreen lg:rounded-r-full duration-200 ease-in-out font-semibold ${
           selectedYear === "0"
             ? "bg-lightgreen !text-black !border-lightgreen"
             : "hover:bg-lightgreen hover:bg-opacity-15"

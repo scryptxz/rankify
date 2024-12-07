@@ -65,14 +65,16 @@ export default function FileUpload(props: FileUploadInterface) {
     <div>
       <label
         htmlFor="file_upload"
-        className={`relative flex justify-center w-[20rem] h-[6rem] text-center px-10 border border-lightgreen cursor-pointer rounded-2xl hover:(bg-lightgreen bg-opacity-15) ${
+        className={`relative flex justify-center py-4 px-12 text-center border border-lightgreen cursor-pointer rounded-2xl hover:bg-lightgreen !bg-opacity-15 ${
           drop && "bg-lightgreen bg-opacity-5"
         }`}
         onDragEnter={() => setDrop(true)}
         onDragLeave={() => setDrop(false)}
         onDrop={() => setDrop(false)}>
-        <strong className="text-xl font-bold text-lightgreen my-auto">
-          {drop ? "Drop here" : "Upload/Drop your spotify history files (JSON)"}
+        <strong className="font-bold text-lightgreen my-auto">
+          {drop
+            ? "Drop here"
+            : "Upload/Drop your spotify streaming history files (JSON)"}
         </strong>
         <input
           type="file"
@@ -88,7 +90,7 @@ export default function FileUpload(props: FileUploadInterface) {
         href="https://www.spotify.com/account/privacy/"
         target="_blank"
         className="flex items-center justify-center gap-2 mt-2 text-light font-normal hover:underline">
-        Request your data file here
+        Request your extended streaming history here
         <RiExternalLinkLine />
       </a>
     </div>

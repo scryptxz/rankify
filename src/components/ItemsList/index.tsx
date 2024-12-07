@@ -134,12 +134,12 @@ export default function ItemsList(props: FileData) {
         ))}
       </ul>
 
-      {ranking.length > 50 && itemsCount < ranking.length && (
+      {itemsCount < ranking.length && (
         <button
           onClick={() => {
             setItemsCount(itemsCount + 50);
           }}
-          className="flex items-center self-center gap-2 text-lg font-semibold text-lightgreen hover:underline">
+          className="flex items-center self-center gap-2  font-semibold text-lightgreen hover:underline">
           Show more <PiCaretDownBold />
         </button>
       )}

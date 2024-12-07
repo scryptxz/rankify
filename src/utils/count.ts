@@ -5,7 +5,6 @@ type CountItemTypes = {
 
 type CountTypes = {
   [key: string]: CountItemTypes;
-  item: CountItemTypes;
 };
 
 type ItemsTypes = {
@@ -21,12 +20,7 @@ type ObjTypes = {
 
 export function count(arr: ItemsTypes[]) {
   console.log(arr);
-  const counts: CountTypes = {
-    item: {
-      id: "",
-      count: 0,
-    },
-  };
+  const counts: CountTypes = {};
 
   arr.forEach((value: ItemsTypes) => {
     counts[value.item as keyof CountTypes]
