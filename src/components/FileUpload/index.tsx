@@ -30,7 +30,6 @@ export default function FileUpload(props: FileUploadInterface) {
     if (files) {
       let concatFiles: SpotifyPlaybackEvent[] = [];
       for (let i = 0; i < files.length; i++) {
-        console.log(i);
         const reader = new FileReader();
         const element = files[i];
         reader.readAsText(element);
@@ -38,7 +37,6 @@ export default function FileUpload(props: FileUploadInterface) {
           setLoading(true);
         };
         reader.onloadend = (e: ProgressEvent<FileReader>) => {
-          console.log(e);
           try {
             const data = e.target?.result as string;
             const json = JSON.parse(data);

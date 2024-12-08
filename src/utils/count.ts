@@ -19,7 +19,6 @@ type ObjTypes = {
 };
 
 export function count(arr: ItemsTypes[]) {
-  console.log(arr);
   const counts: CountTypes = {};
 
   arr.forEach((value: ItemsTypes) => {

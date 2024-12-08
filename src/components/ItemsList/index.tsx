@@ -35,7 +35,7 @@ export default function ItemsList(props: FileData) {
   const { jsonData, category } = props;
 
   const [itemsCount, setItemsCount] = useState<number>(50);
-  const [playCount, setPlayCount] = useState(0);
+  const [trackCount, setTrackCount] = useState(0);
   const [searchItem, setSearchItem] = useState("");
   const [ranking, setRanking] = useState<RankingTypes[]>([]);
 
@@ -50,13 +50,22 @@ export default function ItemsList(props: FileData) {
   };
 
   useEffect(() => {
-    const filteredItemsByYear = jsonData.filter(
-      (a) =>
-        a.ts.includes(selectedYear.toString()) &&
-        a.master_metadata_album_artist_name != null &&
-        a.master_metadata_album_album_name != null &&
-        a.master_metadata_track_name != null
-    );
+    const filteredItemsByYear = jsonData.filter((a) => {
+      if (selectedYear !== "all time") {
+        return (
+          a.ts.includes(selectedYear.toString()) &&
+          a.master_metadata_album_artist_name != null &&
+          a.master_metadata_album_album_name != null &&
+          a.master_metadata_track_name != null
+        );
+      } else {
+        return (
+          a.master_metadata_album_artist_name != null &&
+          a.master_metadata_album_album_name != null &&
+          a.master_metadata_track_name != null
+        );
+      }
+    });
 
     const items: ItemsTypes[] = filteredItemsByYear.map((e) => {
       if (
@@ -85,9 +94,10 @@ export default function ItemsList(props: FileData) {
         .includes(searchItem.toLocaleLowerCase().trim())
     );
 
-    setPlayCount(items.length);
+    // setTrackCount(items.length);
 
     setRanking(filteredItemsBySearch);
+    setTrackCount(count(items).length);
   }, [jsonData, selectedYear, category, searchItem]);
 
   return (
@@ -108,7 +118,22 @@ export default function ItemsList(props: FileData) {
       />
 
       <ul className="flex flex-col items-center gap-8 justify-between text-lightgreen">
-        <li>Play count: {new Intl.NumberFormat().format(playCount)}</li>
+        {category === "master_metadata_track_name" ? (
+          <li>
+            You listened to {new Intl.NumberFormat().format(trackCount)} songs
+            in {selectedYear}.
+          </li>
+        ) : category === "master_metadata_album_album_name" ? (
+          <li>
+            You listened to {new Intl.NumberFormat().format(trackCount)} albums
+            in {selectedYear}.
+          </li>
+        ) : (
+          <li>
+            You listened to {new Intl.NumberFormat().format(trackCount)} artists
+            in {selectedYear}.
+          </li>
+        )}
         {ranking.slice(0, itemsCount).map((e, i) => (
           <li className="flex items-center whitespace-nowrap w-full" key={i}>
             <div

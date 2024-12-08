@@ -66,12 +66,12 @@ export default function YearButtons(props: YearProps) {
       ))}
       <button
         onClick={() => {
-          setSelectedYear("0");
+          setSelectedYear("all time");
           setItemsCount(itemsCount);
           setSearchItem("");
         }}
         className={`self-center px-8 py-2  border border-lightgreen text-lightgreen lg:rounded-r-full duration-200 ease-in-out font-semibold ${
-          selectedYear === "0"
+          selectedYear === "all time"
             ? "bg-lightgreen !text-black !border-lightgreen"
             : "hover:bg-lightgreen hover:bg-opacity-15"
         }`}>
