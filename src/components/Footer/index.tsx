@@ -4,7 +4,7 @@ export default function Footer() {
       <p className="text-lightgreen text-center font-normal text-lg">
         Developed with &hearts; by{" "}
         <a
-          href="https://github.com/ScryptRG"
+          href="https://github.com/scryptxz"
           target="_blank"
           className="text-light hover:underline">
           Scrypt
